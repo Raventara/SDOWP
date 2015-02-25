@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AForge.Imaging.Filters;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -16,6 +17,8 @@ namespace SDOW_P
 {
 	public partial class Form1 : Form
 	{
+		private int[,] kernel = new int[3, 3] { { 5, 4, 5 }, { 4, 50, 4 }, { 5, 4, 5 } };
+
 		private const string outputBackgroundFile = @"C:\Users\Public\Pictures\SDOBackground.bmp";
 
 		[DllImport("user32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
@@ -70,11 +73,13 @@ namespace SDOW_P
 		private void Form1_Load(object sender, EventArgs e)
 		{
 			LoadSDOThumbnails();
+			LoadDisplays();
+
 
 			//string path = string.Empty;
-			//GetFancySDOWP();
+			GetFancySDOWP();
 
-			//DrawDisplays();
+			DrawDisplays();
 
 			//var images = new Dictionary<string, Image>
 			//{
@@ -125,6 +130,15 @@ namespace SDOW_P
 			return SDOPreview;
 		}
 
+		public void LoadDisplays()
+		{
+			foreach (var screen in Screen.AllScreens)
+			{
+				cbScreens.Items.Add(screen.DeviceName);
+			}
+			cbScreens.SelectedIndex = 0;
+		}
+
 		private void DrawDisplays()
 		{
 			Image i = new Bitmap(pbScreensPreview.Width, pbScreensPreview.Height);
@@ -142,34 +156,28 @@ namespace SDOW_P
 						minY = screen.WorkingArea.Y;
 				}
 
-				listBox1.Items.Add("minX:" + minX.ToString());
-				listBox1.Items.Add("minY:" + minY.ToString());
-
 				int screenNo = 1;
 
 				foreach (var screen in Screen.AllScreens)
 				{
-					// For each screen, add the screen properties to a list box.
-					listBox1.Items.Add("Device Name: " + screen.DeviceName);
-					listBox1.Items.Add("Bounds: " + screen.Bounds.ToString());
-					listBox1.Items.Add("Type: " + screen.GetType().ToString());
-					listBox1.Items.Add("Working Area: " + screen.WorkingArea.ToString());
-					listBox1.Items.Add("Primary Screen: " + screen.Primary.ToString());
-
 					float ratioX = (float)((float)i.Width / (float)SystemInformation.VirtualScreen.Width);
 					float ratioY = (float)((float)i.Height / (float)SystemInformation.VirtualScreen.Height);
 
-					float ratio = Math.Min(ratioX, ratioY);
+					float ratio = Math.Min(ratioX, ratioY) * 0.999f;
 
 					float ScreenX = (float)((screen.WorkingArea.X - minX) * ratio);
+					if (ScreenX > 0) { ScreenX++; }
 					float ScreenY = (float)((screen.WorkingArea.Y - minY) * ratio);
+					if (ScreenY > 0) { ScreenY++; }
 					float ScreenW = (float)(screen.WorkingArea.Width * ratio);
 					float ScreenH = (float)(screen.WorkingArea.Height * ratio);
+
+					float SDOsize = Math.Min(ScreenW, ScreenH);
 
 					if (SDOPreviewImage != null && screenNo == 1)
 					{
 						g.FillRectangle(Brushes.Black, ScreenX, ScreenY, ScreenW, ScreenH);
-						g.DrawImage(SDOPreviewImage, new RectangleF((ScreenW / 2) - (SDOPreviewImage.Width / 2), (ScreenH / 2) - (SDOPreviewImage.Height / 2), SDOPreviewImage.Width, SDOPreviewImage.Height));
+						g.DrawImage(SDOPreviewImage, new RectangleF((ScreenW / 2) - (SDOsize / 2), (ScreenH / 2) - (SDOsize / 2), SDOsize, SDOsize));
 						g.DrawRectangle(Pens.GreenYellow, ScreenX, ScreenY, ScreenW, ScreenH);
 					}
 					else
@@ -210,6 +218,9 @@ namespace SDOW_P
 
 		private void GetFancySDOWP()
 		{
+
+			IFilter filter = new Convolution(kernel);
+
 			string[] urls = new string[] {"latest_2048_0094.jpg", "latest_2048_0131.jpg", "latest_2048_0171.jpg", "latest_2048_0193.jpg", "latest_2048_0211.jpg", "latest_2048_0304.jpg"
 									,"latest_2048_0335.jpg"}; //, "latest_2048_1600.jpg", "latest_2048_1700.jpg", "latest_2048_4500.jpg", "latest_2048_HMIIC.jpg", "latest_2048_HMIIF.jpg" };
 
@@ -245,7 +256,11 @@ namespace SDOW_P
 				}
 			}
 
+			SDO = filter.Apply(SDO);
+
 			SDO.Save(Application.CommonAppDataPath + @"\SDO.jpg");
+
+			System.Diagnostics.Process.Start("explorer.exe", Application.CommonAppDataPath);
 
 			this.BackgroundImage = new Bitmap(SDO);
 		}
@@ -382,6 +397,25 @@ namespace SDOW_P
 		{
 			SDOPreviewImage = GenerateSDOPreviewImage();
 			DrawDisplays();
+		}
+
+		private void cbScreens_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			LoadScreen(cbScreens.SelectedItem.ToString());
+		}
+
+		private void LoadScreen(string p)
+		{
+			if (p != string.Empty)
+			{
+				lbScreenInfo.Items.Clear();
+				if (Screen.AllScreens.First(c => c.DeviceName == p).Primary)
+					lbScreenInfo.Items.Add("Primary Monitor");
+				else
+					lbScreenInfo.Items.Add("Secondary Monitor");
+
+				lbScreenInfo.Items.Add("Resolution: " + Screen.AllScreens.First(c => c.DeviceName == p).WorkingArea.Width.ToString() + " X " + Screen.AllScreens.First(c => c.DeviceName == p).WorkingArea.Height.ToString());
+			}
 		}
 	}
 }

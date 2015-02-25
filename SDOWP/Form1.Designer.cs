@@ -28,9 +28,8 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.listBox1 = new System.Windows.Forms.ListBox();
 			this.pbScreensPreview = new System.Windows.Forms.PictureBox();
-			this.comboBox1 = new System.Windows.Forms.ComboBox();
+			this.cbScreens = new System.Windows.Forms.ComboBox();
 			this.tclWallpapers = new System.Windows.Forms.TabControl();
 			this.tpSDO = new System.Windows.Forms.TabPage();
 			this.btnSDOPreview = new System.Windows.Forms.Button();
@@ -45,6 +44,8 @@
 			this.pbSDO1 = new SDOW_P.ToggleImageButton();
 			this.tpStatic = new System.Windows.Forms.TabPage();
 			this.pbStatic = new System.Windows.Forms.PictureBox();
+			this.label1 = new System.Windows.Forms.Label();
+			this.lbScreenInfo = new System.Windows.Forms.ListBox();
 			((System.ComponentModel.ISupportInitialize)(this.pbScreensPreview)).BeginInit();
 			this.tclWallpapers.SuspendLayout();
 			this.tpSDO.SuspendLayout();
@@ -59,14 +60,6 @@
 			((System.ComponentModel.ISupportInitialize)(this.pbStatic)).BeginInit();
 			this.SuspendLayout();
 			// 
-			// listBox1
-			// 
-			this.listBox1.FormattingEnabled = true;
-			this.listBox1.Location = new System.Drawing.Point(282, 315);
-			this.listBox1.Name = "listBox1";
-			this.listBox1.Size = new System.Drawing.Size(184, 134);
-			this.listBox1.TabIndex = 1;
-			// 
 			// pbScreensPreview
 			// 
 			this.pbScreensPreview.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -77,13 +70,14 @@
 			this.pbScreensPreview.TabIndex = 3;
 			this.pbScreensPreview.TabStop = false;
 			// 
-			// comboBox1
+			// cbScreens
 			// 
-			this.comboBox1.FormattingEnabled = true;
-			this.comboBox1.Location = new System.Drawing.Point(472, 12);
-			this.comboBox1.Name = "comboBox1";
-			this.comboBox1.Size = new System.Drawing.Size(175, 21);
-			this.comboBox1.TabIndex = 4;
+			this.cbScreens.FormattingEnabled = true;
+			this.cbScreens.Location = new System.Drawing.Point(522, 12);
+			this.cbScreens.Name = "cbScreens";
+			this.cbScreens.Size = new System.Drawing.Size(142, 21);
+			this.cbScreens.TabIndex = 4;
+			this.cbScreens.SelectedIndexChanged += new System.EventHandler(this.cbScreens_SelectedIndexChanged);
 			// 
 			// tclWallpapers
 			// 
@@ -254,15 +248,33 @@
 			this.pbStatic.TabStop = false;
 			this.pbStatic.Click += new System.EventHandler(this.pbStatic_Click);
 			// 
+			// label1
+			// 
+			this.label1.AutoSize = true;
+			this.label1.Location = new System.Drawing.Point(472, 15);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(44, 13);
+			this.label1.TabIndex = 6;
+			this.label1.Text = "Screen:";
+			// 
+			// lbScreenInfo
+			// 
+			this.lbScreenInfo.FormattingEnabled = true;
+			this.lbScreenInfo.Location = new System.Drawing.Point(670, 12);
+			this.lbScreenInfo.Name = "lbScreenInfo";
+			this.lbScreenInfo.Size = new System.Drawing.Size(202, 43);
+			this.lbScreenInfo.TabIndex = 7;
+			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(884, 461);
+			this.Controls.Add(this.lbScreenInfo);
+			this.Controls.Add(this.label1);
 			this.Controls.Add(this.tclWallpapers);
-			this.Controls.Add(this.comboBox1);
+			this.Controls.Add(this.cbScreens);
 			this.Controls.Add(this.pbScreensPreview);
-			this.Controls.Add(this.listBox1);
 			this.DoubleBuffered = true;
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.Name = "Form1";
@@ -283,14 +295,14 @@
 			this.tpStatic.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.pbStatic)).EndInit();
 			this.ResumeLayout(false);
+			this.PerformLayout();
 
 		}
 
 		#endregion
 
-		private System.Windows.Forms.ListBox listBox1;
 		private System.Windows.Forms.PictureBox pbScreensPreview;
-		private System.Windows.Forms.ComboBox comboBox1;
+		private System.Windows.Forms.ComboBox cbScreens;
 		private System.Windows.Forms.TabControl tclWallpapers;
 		private System.Windows.Forms.TabPage tpStatic;
 		private System.Windows.Forms.PictureBox pbStatic;
@@ -305,6 +317,8 @@
 		private ToggleImageButton pbSDO5;
 		private ToggleImageButton pbSDO6;
 		private ToggleImageButton pbSDO7;
+		private System.Windows.Forms.Label label1;
+		private System.Windows.Forms.ListBox lbScreenInfo;
 	}
 }
 
