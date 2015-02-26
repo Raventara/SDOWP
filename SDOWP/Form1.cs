@@ -14,7 +14,7 @@ namespace SDOW_P
 {
 	public partial class Form1 : Form
 	{
-		private int[,] kernel = new int[3, 3] { { 5, 4, 5 }, { 4, 50, 4 }, { 5, 4, 5 } };
+		private int[,] kernel = new int[3, 3] { { 5, 4, 5 }, { 4, 100, 4 }, { 5, 4, 5 } };
 
 		private const string outputBackgroundFile = @"C:\Users\Public\Pictures\SDOBackground.bmp";
 
@@ -74,7 +74,7 @@ namespace SDOW_P
 
 
 			//string path = string.Empty;
-			GetFancySDOWP();
+			//GetFancySDOWP();
 
 			DrawDisplays();
 
@@ -221,8 +221,8 @@ namespace SDOW_P
 			string[] urls = new string[] {"latest_2048_0094.jpg", "latest_2048_0131.jpg", "latest_2048_0171.jpg", "latest_2048_0193.jpg", "latest_2048_0211.jpg", "latest_2048_0304.jpg"
 									,"latest_2048_0335.jpg"}; //, "latest_2048_1600.jpg", "latest_2048_1700.jpg", "latest_2048_4500.jpg", "latest_2048_HMIIC.jpg", "latest_2048_HMIIF.jpg" };
 
-			Random rnd = new Random();
-			urls = urls.OrderBy(x => rnd.Next()).ToArray();
+			//Random rnd = new Random();
+			//urls = urls.OrderBy(x => rnd.Next()).ToArray();
 
 			int partwidth = 2048 / urls.Count();
 
@@ -253,11 +253,12 @@ namespace SDOW_P
 				}
 			}
 
+			
 			SDO = filter.Apply(SDO);
 
-			SDO.Save(Application.CommonAppDataPath + @"\SDO.jpg");
+			SDO.Save(Application.CommonAppDataPath + @"\SDOAliased.jpg");
 
-			System.Diagnostics.Process.Start("explorer.exe", Application.CommonAppDataPath);
+			//System.Diagnostics.Process.Start("explorer.exe", Application.CommonAppDataPath);
 
 			this.BackgroundImage = new Bitmap(SDO);
 		}
