@@ -14,6 +14,8 @@ namespace SDOW_P
 {
 	public partial class Form1 : Form
 	{
+		private int LastSDOIndex = 0;
+
 		private int[,] kernel = new int[3, 3] { { 5, 4, 5 }, { 4, 100, 4 }, { 5, 4, 5 } };
 
 		private const string outputBackgroundFile = @"C:\Users\Public\Pictures\SDOBackground.bmp";
@@ -112,6 +114,13 @@ namespace SDOW_P
 			
 			Bitmap SDOPreview = new Bitmap(170, 170);
 
+			List<Control> SDOPreviewImages = new List<Control>();
+ 
+			SDOPreviewImages = tpSDO.Controls.Cast<Control>().OrderBy(c => c.Name).Where(c => c.GetType() == typeof(ToggleImageButton) && ((ToggleImageButton)c).Selected == true).ToList();
+
+			if (cbRandom.Checked)
+				SDOPreviewImages = SDOPreviewImages.OrderBy(c => rnd.Next()).ToList();
+
 			if (rbSliced.Checked)
 			{
 				using (Graphics g = Graphics.FromImage(SDOPreview))
@@ -120,7 +129,7 @@ namespace SDOW_P
 					g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
 
 					float offset = 0;
-					foreach (ToggleImageButton control in tpSDO.Controls.Cast<Control>().OrderBy(c => rnd.Next()).Where(c => c.GetType() == typeof(ToggleImageButton) && ((ToggleImageButton)c).Selected == true))
+					foreach (ToggleImageButton control in SDOPreviewImages)
 					{
 						g.DrawImage(control.Image, new RectangleF(offset - 1, 0, segmentWidth + 1, 170), new RectangleF(offset - 1, 0, segmentWidth + 1, 170), units);
 						offset += segmentWidth;
@@ -133,10 +142,17 @@ namespace SDOW_P
 				{
 					g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
 
-					ToggleImageButton control = (ToggleImageButton)tpSDO.Controls.Cast<Control>().OrderBy(c => rnd.Next()).Where(c => c.GetType() == typeof(ToggleImageButton) && ((ToggleImageButton)c).Selected == true).First();
+					int rndIndex = rnd.Next(SDOPreviewImages.Count);
 
-					g.DrawImage(control.Image, new RectangleF(0, 0, 170, 170));
-					
+					foreach (ToggleImageButton item in SDOPreviewImages)
+					{
+						if (item.Order == (cbRandom.Checked ? rndIndex : LastSDOIndex))
+						{
+							g.DrawImage(item.Image, new RectangleF(0, 0, 170, 170));
+							LastSDOIndex = (LastSDOIndex + 1) % SDOPreviewImages.Count;
+							break;
+						}
+					}
 				}
 			}
 			

@@ -14,6 +14,12 @@ namespace SDOW_P
 	public partial class ToggleImageButton : PictureBox
 	{
 		public bool Selected { get; set; }
+
+		[Category("Custom")]
+		[Description("Used for ordering")]
+		[Browsable(true)]
+		public int Order { get; set; }
+
 		private Image i;
 		public ToggleImageButton()
 		{
