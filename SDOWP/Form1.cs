@@ -108,22 +108,38 @@ namespace SDOW_P
 
 			float segmentWidth = 170f / segmentCount;
 
+			Random rnd = new Random();
 			
-
 			Bitmap SDOPreview = new Bitmap(170, 170);
 
-			using (Graphics g = Graphics.FromImage(SDOPreview))
+			if (rbSliced.Checked)
 			{
-				GraphicsUnit units = GraphicsUnit.Pixel;
-				g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
-
-				float offset = 0;
-				foreach (ToggleImageButton control in tpSDO.Controls.Cast<Control>().OrderBy(c => c.Name).Where(c => c.GetType() == typeof(ToggleImageButton) && ((ToggleImageButton)c).Selected == true))
+				using (Graphics g = Graphics.FromImage(SDOPreview))
 				{
-					g.DrawImage(control.Image, new RectangleF(offset - 1, 0, segmentWidth + 1, 170), new RectangleF(offset - 1, 0, segmentWidth + 1, 170), units);
-					offset += segmentWidth;
+					GraphicsUnit units = GraphicsUnit.Pixel;
+					g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+
+					float offset = 0;
+					foreach (ToggleImageButton control in tpSDO.Controls.Cast<Control>().OrderBy(c => rnd.Next()).Where(c => c.GetType() == typeof(ToggleImageButton) && ((ToggleImageButton)c).Selected == true))
+					{
+						g.DrawImage(control.Image, new RectangleF(offset - 1, 0, segmentWidth + 1, 170), new RectangleF(offset - 1, 0, segmentWidth + 1, 170), units);
+						offset += segmentWidth;
+					}
 				}
 			}
+			else
+			{
+				using (Graphics g = Graphics.FromImage(SDOPreview))
+				{
+					g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+
+					ToggleImageButton control = (ToggleImageButton)tpSDO.Controls.Cast<Control>().OrderBy(c => rnd.Next()).Where(c => c.GetType() == typeof(ToggleImageButton) && ((ToggleImageButton)c).Selected == true).First();
+
+					g.DrawImage(control.Image, new RectangleF(0, 0, 170, 170));
+					
+				}
+			}
+			
 			return SDOPreview;
 		}
 

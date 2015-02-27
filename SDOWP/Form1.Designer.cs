@@ -34,7 +34,7 @@
 			this.tpSDO = new System.Windows.Forms.TabPage();
 			this.btnSDOPreview = new System.Windows.Forms.Button();
 			this.rbSliced = new System.Windows.Forms.RadioButton();
-			this.rbConsecutive = new System.Windows.Forms.RadioButton();
+			this.rbSlideShow = new System.Windows.Forms.RadioButton();
 			this.pbSDO2 = new SDOW_P.ToggleImageButton();
 			this.pbSDO3 = new SDOW_P.ToggleImageButton();
 			this.pbSDO4 = new SDOW_P.ToggleImageButton();
@@ -93,7 +93,7 @@
 			// 
 			this.tpSDO.Controls.Add(this.btnSDOPreview);
 			this.tpSDO.Controls.Add(this.rbSliced);
-			this.tpSDO.Controls.Add(this.rbConsecutive);
+			this.tpSDO.Controls.Add(this.rbSlideShow);
 			this.tpSDO.Controls.Add(this.pbSDO2);
 			this.tpSDO.Controls.Add(this.pbSDO3);
 			this.tpSDO.Controls.Add(this.pbSDO4);
@@ -122,6 +122,7 @@
 			// rbSliced
 			// 
 			this.rbSliced.AutoSize = true;
+			this.rbSliced.Checked = true;
 			this.rbSliced.Location = new System.Drawing.Point(133, 220);
 			this.rbSliced.Name = "rbSliced";
 			this.rbSliced.Size = new System.Drawing.Size(54, 17);
@@ -130,16 +131,15 @@
 			this.rbSliced.Text = "Sliced";
 			this.rbSliced.UseVisualStyleBackColor = true;
 			// 
-			// rbConsecutive
+			// rbSlideShow
 			// 
-			this.rbConsecutive.AutoSize = true;
-			this.rbConsecutive.Location = new System.Drawing.Point(198, 220);
-			this.rbConsecutive.Name = "rbConsecutive";
-			this.rbConsecutive.Size = new System.Drawing.Size(84, 17);
-			this.rbConsecutive.TabIndex = 8;
-			this.rbConsecutive.TabStop = true;
-			this.rbConsecutive.Text = "Consecutive";
-			this.rbConsecutive.UseVisualStyleBackColor = true;
+			this.rbSlideShow.AutoSize = true;
+			this.rbSlideShow.Location = new System.Drawing.Point(198, 220);
+			this.rbSlideShow.Name = "rbSlideShow";
+			this.rbSlideShow.Size = new System.Drawing.Size(75, 17);
+			this.rbSlideShow.TabIndex = 8;
+			this.rbSlideShow.Text = "SlideShow";
+			this.rbSlideShow.UseVisualStyleBackColor = true;
 			// 
 			// pbSDO2
 			// 
@@ -308,7 +308,7 @@
 		private System.Windows.Forms.PictureBox pbStatic;
 		private System.Windows.Forms.TabPage tpSDO;
 		private System.Windows.Forms.RadioButton rbSliced;
-		private System.Windows.Forms.RadioButton rbConsecutive;
+		private System.Windows.Forms.RadioButton rbSlideShow;
 		private System.Windows.Forms.Button btnSDOPreview;
 		private ToggleImageButton pbSDO1;
 		private ToggleImageButton pbSDO2;
