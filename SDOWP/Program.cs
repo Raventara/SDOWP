@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace SDOW_P
+namespace SDOWP
 {
 	static class Program
 	{

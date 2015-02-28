@@ -1,4 +1,5 @@
-﻿namespace SDOW_P
+﻿
+namespace SDOWP
 {
 	partial class Form1
 	{
@@ -40,13 +41,13 @@
 			this.label1 = new System.Windows.Forms.Label();
 			this.lbScreenInfo = new System.Windows.Forms.ListBox();
 			this.cbRandom = new System.Windows.Forms.CheckBox();
-			this.pbSDO2 = new SDOW_P.ToggleImageButton();
-			this.pbSDO3 = new SDOW_P.ToggleImageButton();
-			this.pbSDO4 = new SDOW_P.ToggleImageButton();
-			this.pbSDO5 = new SDOW_P.ToggleImageButton();
-			this.pbSDO6 = new SDOW_P.ToggleImageButton();
-			this.pbSDO7 = new SDOW_P.ToggleImageButton();
-			this.pbSDO1 = new SDOW_P.ToggleImageButton();
+			this.pbSDO2 = new ToggleImageButton();
+			this.pbSDO3 = new ToggleImageButton();
+			this.pbSDO4 = new ToggleImageButton();
+			this.pbSDO5 = new ToggleImageButton();
+			this.pbSDO6 = new ToggleImageButton();
+			this.pbSDO7 = new ToggleImageButton();
+			this.pbSDO1 = new ToggleImageButton();
 			((System.ComponentModel.ISupportInitialize)(this.pbScreensPreview)).BeginInit();
 			this.tclWallpapers.SuspendLayout();
 			this.tpSDO.SuspendLayout();

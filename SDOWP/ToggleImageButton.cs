@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing.Imaging;
 
-namespace SDOW_P
+namespace SDOWP
 {
 	public partial class ToggleImageButton : PictureBox
 	{

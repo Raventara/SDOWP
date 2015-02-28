@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace SDOW_P
+namespace SDOWP
 {
 	public partial class Form1 : Form
 	{

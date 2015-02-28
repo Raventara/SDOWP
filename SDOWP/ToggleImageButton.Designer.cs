@@ -1,4 +1,4 @@
-﻿namespace SDOW_P
+﻿namespace SDOWP
 {
 	partial class ToggleImageButton
 	{

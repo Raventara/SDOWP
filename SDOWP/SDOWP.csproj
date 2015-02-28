@@ -7,8 +7,8 @@
     <ProjectGuid>{B838B5EF-0AD3-4008-ABE6-335A17F976B2}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SDOW_P</RootNamespace>
-    <AssemblyName>SDOW-P</AssemblyName>
+    <RootNamespace>SDOWP</RootNamespace>
+    <AssemblyName>SDOWP</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -75,6 +75,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="ToggleImageButton.resx">
       <DependentUpon>ToggleImageButton.cs</DependentUpon>
