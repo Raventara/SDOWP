@@ -104,56 +104,53 @@ namespace SDOWP
 			}
 		}
 
-		private Bitmap GenerateSDOPreviewImage()
+        /// <summary>
+        /// Generates the image from the supplied list of images as either a slide show or a sliced together image
+        /// </summary>
+        /// <param name="pImages">The list of images to generate the output image from</param>
+        /// <returns></returns>
+		private Bitmap GenerateSDOImage(List<Image> pImages)
 		{
-			int segmentCount = tpSDO.Controls.Cast<Control>().OrderBy(c => c.Name).Where(c => c.GetType() == typeof(ToggleImageButton) && ((ToggleImageButton)c).Selected == true).Count();
+            int segmentCount = pImages.Count;
 
-			float segmentWidth = 170f / segmentCount;
+
+            int w = pImages[0].Width;
+            int h = pImages[0].Height;
+			float segmentWidth = w / segmentCount;
 
 			Random rnd = new Random();
 			
-			Bitmap SDOPreview = new Bitmap(170, 170);
-
-			List<Control> SDOPreviewImages = new List<Control>();
- 
-			SDOPreviewImages = tpSDO.Controls.Cast<Control>().OrderBy(c => c.Name).Where(c => c.GetType() == typeof(ToggleImageButton) && ((ToggleImageButton)c).Selected == true).ToList();
+			Bitmap SDOPreview = new Bitmap(w,h);
 
 			if (cbRandom.Checked)
-				SDOPreviewImages = SDOPreviewImages.OrderBy(c => rnd.Next()).ToList();
+				pImages = pImages.OrderBy(c => rnd.Next()).ToList();
 
 			if (rbSliced.Checked)
-			{
+			{   // Sliced images
 				using (Graphics g = Graphics.FromImage(SDOPreview))
 				{
 					GraphicsUnit units = GraphicsUnit.Pixel;
 					g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
 
 					float offset = 0;
-					foreach (ToggleImageButton control in SDOPreviewImages)
+					foreach (var i in pImages)
 					{
-						g.DrawImage(control.Image, new RectangleF(offset - 1, 0, segmentWidth + 1, 170), new RectangleF(offset - 1, 0, segmentWidth + 1, 170), units);
+						g.DrawImage(i, new RectangleF(offset - 1, 0, segmentWidth + 1, w), new RectangleF(offset - 1, 0, segmentWidth + 1, h), units);
 						offset += segmentWidth;
 					}
 				}
 			}
 			else
-			{
-				using (Graphics g = Graphics.FromImage(SDOPreview))
-				{
-					g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+			{   //Slide Show
+                using (Graphics g = Graphics.FromImage(SDOPreview))
+                {
+                    g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
 
-					int rndIndex = rnd.Next(SDOPreviewImages.Count);
+                    int rndIndex = rnd.Next(pImages.Count);
 
-					foreach (ToggleImageButton item in SDOPreviewImages)
-					{
-						if (item.Order == (cbRandom.Checked ? rndIndex : LastSDOIndex))
-						{
-							g.DrawImage(item.Image, new RectangleF(0, 0, 170, 170));
-							LastSDOIndex = (LastSDOIndex + 1) % SDOPreviewImages.Count;
-							break;
-						}
-					}
-				}
+                    g.DrawImage(pImages[cbRandom.Checked ? rndIndex : LastSDOIndex], new RectangleF(0, 0, w, h));
+                    LastSDOIndex = (LastSDOIndex + 1) % pImages.Count;
+                }
 			}
 			
 			return SDOPreview;
@@ -425,7 +422,14 @@ namespace SDOWP
 
 		private void btnSDOPreview_Click(object sender, EventArgs e)
 		{
-			SDOPreviewImage = GenerateSDOPreviewImage();
+            List<Image> SDOPreviewImages = new List<Image>();
+
+            foreach (var item in tpSDO.Controls.Cast<Control>().OrderBy(c => c.Name).Where(c => c.GetType() == typeof(ToggleImageButton) && ((ToggleImageButton)c).Selected == true).ToList())
+            {
+               SDOPreviewImages.Add(((ToggleImageButton)item).Image);
+            }
+
+            SDOPreviewImage = GenerateSDOImage(SDOPreviewImages);
 			DrawDisplays();
 		}
 
