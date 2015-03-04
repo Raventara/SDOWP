@@ -76,18 +76,18 @@ namespace SDOWP
 
 
 			//string path = string.Empty;
-			//GetFancySDOWP();
+			GetFancySDOWP();
 
 			DrawDisplays();
 
-			//var images = new Dictionary<string, Image>
-			//{
-			//	{ @"\\.\DISPLAY1", Image.FromFile(@"C:\Users\russell.bruechert\Pictures\Jupiter.png") },
-			//	{ @"\\.\DISPLAY2", Image.FromFile(Application.CommonAppDataPath + @"\SDO.jpg") },
-			//	//{ @"\\.\DISPLAY3", Image.FromFile(@"C:\Users\russell.bruechert\Pictures\Jupiter.png") },
-			//};
+			var images = new Dictionary<string, Image>
+			{
+				{ @"\\.\DISPLAY1", Image.FromFile(@"C:\Users\russell.bruechert\Pictures\Jupiter.png") },
+				{ @"\\.\DISPLAY2", Image.FromFile(Application.CommonAppDataPath + @"\SDO.jpg") },
+				//{ @"\\.\DISPLAY3", Image.FromFile(@"C:\Users\russell.bruechert\Pictures\Jupiter.png") },
+			};
 
-			//CreateBackgroundImage(images);
+			CreateFullWallperImageForAllMonitors(images);
 
 		}
 
@@ -120,14 +120,14 @@ namespace SDOWP
 
 			Random rnd = new Random();
 			
-			Bitmap SDOPreview = new Bitmap(w,h);
+			Bitmap result = new Bitmap(w,h);
 
 			if (cbRandom.Checked)
 				pImages = pImages.OrderBy(c => rnd.Next()).ToList();
 
 			if (rbSliced.Checked)
 			{   // Sliced images
-				using (Graphics g = Graphics.FromImage(SDOPreview))
+				using (Graphics g = Graphics.FromImage(result))
 				{
 					GraphicsUnit units = GraphicsUnit.Pixel;
 					g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
@@ -142,7 +142,7 @@ namespace SDOWP
 			}
 			else
 			{   //Slide Show
-                using (Graphics g = Graphics.FromImage(SDOPreview))
+                using (Graphics g = Graphics.FromImage(result))
                 {
                     g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
 
@@ -153,7 +153,7 @@ namespace SDOWP
                 }
 			}
 			
-			return SDOPreview;
+			return result;
 		}
 
 		public void LoadDisplays()
@@ -244,52 +244,70 @@ namespace SDOWP
 
 		private void GetFancySDOWP()
 		{
-
+			List<Image> SDOImages = new List<Image>();
 			IFilter filter = new Convolution(kernel);
 
 			string[] urls = new string[] {"latest_2048_0094.jpg", "latest_2048_0131.jpg", "latest_2048_0171.jpg", "latest_2048_0193.jpg", "latest_2048_0211.jpg", "latest_2048_0304.jpg"
 									,"latest_2048_0335.jpg"}; //, "latest_2048_1600.jpg", "latest_2048_1700.jpg", "latest_2048_4500.jpg", "latest_2048_HMIIC.jpg", "latest_2048_HMIIF.jpg" };
 
-			//Random rnd = new Random();
-			//urls = urls.OrderBy(x => rnd.Next()).ToArray();
-
-			int partwidth = 2048 / urls.Count();
-
-			Bitmap SDO = new Bitmap(2048, 2048);
-
-			using (Graphics g = Graphics.FromImage(SDO))
+			foreach (string url in urls)
 			{
-				GraphicsUnit units = GraphicsUnit.Pixel;
-				g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
 				using (WebClient webClient = new WebClient())
 				{
-					int offset = 0;
-					for (int i = 0; i < urls.Count(); i++)
+
+					byte[] data = webClient.DownloadData(baseURL + url);
+
+					using (MemoryStream mem = new MemoryStream(data))
 					{
-
-
-
-						string URL = urls[i];
-						byte[] data = webClient.DownloadData(baseURL + URL);
-
-						using (MemoryStream mem = new MemoryStream(data))
-						{
-							Image ti = new Bitmap(Image.FromStream(mem));
-							g.DrawImage(ti, new Rectangle(offset - 1, 0, partwidth + 1, SDO.Height), new Rectangle(offset - 1, 0, partwidth + 1, SDO.Height), units);
-						}
-						offset += partwidth;
+						Image ti = new Bitmap(Image.FromStream(mem));
+						SDOImages.Add(ti);
 					}
 				}
 			}
 
+			Bitmap SDO = GenerateSDOImage(SDOImages);
 			
+
+			//Random rnd = new Random();
+			//urls = urls.OrderBy(x => rnd.Next()).ToArray();
+
+			//int partwidth = 2048 / urls.Count();
+
+			//Bitmap SDO = new Bitmap(2048, 2048);
+
+			//using (Graphics g = Graphics.FromImage(SDO))
+			//{
+			//	GraphicsUnit units = GraphicsUnit.Pixel;
+			//	g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+			//	using (WebClient webClient = new WebClient())
+			//	{
+			//		int offset = 0;
+			//		for (int i = 0; i < urls.Count(); i++)
+			//		{
+
+
+
+			//			string URL = urls[i];
+			//			byte[] data = webClient.DownloadData(baseURL + URL);
+
+			//			using (MemoryStream mem = new MemoryStream(data))
+			//			{
+			//				Image ti = new Bitmap(Image.FromStream(mem));
+			//				g.DrawImage(ti, new Rectangle(offset - 1, 0, partwidth + 1, SDO.Height), new Rectangle(offset - 1, 0, partwidth + 1, SDO.Height), units);
+			//			}
+			//			offset += partwidth;
+			//		}
+			//	}
+			//}
+
+
 			SDO = filter.Apply(SDO);
 
-			SDO.Save(Application.CommonAppDataPath + @"\SDOAliased.jpg");
+			SDO.Save(Application.CommonAppDataPath + @"\SDO.jpg");
 
-			//System.Diagnostics.Process.Start("explorer.exe", Application.CommonAppDataPath);
+			////System.Diagnostics.Process.Start("explorer.exe", Application.CommonAppDataPath);
 
-			this.BackgroundImage = new Bitmap(SDO);
+			//this.BackgroundImage = new Bitmap(SDO);
 		}
 
 		private static void CreateFullWallperImageForAllMonitors(Dictionary<string, Image> imageFiles)
@@ -422,14 +440,14 @@ namespace SDOWP
 
 		private void btnSDOPreview_Click(object sender, EventArgs e)
 		{
-            List<Image> SDOPreviewImages = new List<Image>();
+			List<Image> SDOPreviewImages = new List<Image>();
 
-            foreach (var item in tpSDO.Controls.Cast<Control>().OrderBy(c => c.Name).Where(c => c.GetType() == typeof(ToggleImageButton) && ((ToggleImageButton)c).Selected == true).ToList())
-            {
-               SDOPreviewImages.Add(((ToggleImageButton)item).Image);
-            }
+			foreach (var item in tpSDO.Controls.Cast<Control>().OrderBy(c => c.Name).Where(c => c.GetType() == typeof(ToggleImageButton) && ((ToggleImageButton)c).Selected == true).ToList())
+			{
+				SDOPreviewImages.Add(((ToggleImageButton)item).Image);
+			}
 
-            SDOPreviewImage = GenerateSDOImage(SDOPreviewImages);
+			SDOPreviewImage = GenerateSDOImage(SDOPreviewImages);
 			DrawDisplays();
 		}
 
