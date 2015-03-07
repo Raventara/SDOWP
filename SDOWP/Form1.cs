@@ -76,18 +76,18 @@ namespace SDOWP
 
 
 			//string path = string.Empty;
-			GetFancySDOWP();
+			//GetFancySDOWP();
 
 			DrawDisplays();
 
-			var images = new Dictionary<string, Image>
-			{
-				{ @"\\.\DISPLAY1", Image.FromFile(@"C:\Users\russell.bruechert\Pictures\Jupiter.png") },
-				{ @"\\.\DISPLAY2", Image.FromFile(Application.CommonAppDataPath + @"\SDO.jpg") },
-				//{ @"\\.\DISPLAY3", Image.FromFile(@"C:\Users\russell.bruechert\Pictures\Jupiter.png") },
-			};
+            //var images = new Dictionary<string, Image>
+            //{
+            //    //{ @"\\.\DISPLAY1", Image.FromFile(@"C:\Users\russell.bruechert\Pictures\Jupiter.png") },
+            //    { @"\\.\DISPLAY1", Image.FromFile(Application.CommonAppDataPath + @"\SDO.jpg") },
+            //    //{ @"\\.\DISPLAY3", Image.FromFile(@"C:\Users\russell.bruechert\Pictures\Jupiter.png") },
+            //};
 
-			CreateFullWallperImageForAllMonitors(images);
+            //CreateFullWallperImageForAllMonitors(images);
 
 		}
 
@@ -469,5 +469,26 @@ namespace SDOWP
 				lbScreenInfo.Items.Add("Resolution: " + Screen.AllScreens.First(c => c.DeviceName == p).WorkingArea.Width.ToString() + " X " + Screen.AllScreens.First(c => c.DeviceName == p).WorkingArea.Height.ToString());
 			}
 		}
+
+        private void btnSaveSettings_Click(object sender, EventArgs e)
+        {
+            bool[] SDOs = new bool[7] { true, true, true, true, true, true, true };
+            var settings = new ScreenSettings();
+            settings.Settings.Add(new ScreenSetting() { ScreenDeviceName = "test", SDOSettings = new SDOSetting() { Random = true, SDOSelections = SDOs.ToList<bool>(), Sliced = true, SlideShow = false } });
+            Settings.AllScreenSettings = settings;
+            Settings.SaveSettings("test.settings");
+        }
+
+        private void btnLoadSettings_Click(object sender, EventArgs e)
+        {
+            Settings.LoadSettings("test.settings");
+            int x = 0;
+            foreach (PictureBox control in tpSDO.Controls.Cast<Control>().OrderBy(c => c.Name).Where(c => c.GetType() == typeof(ToggleImageButton)))
+            {
+                ((ToggleImageButton)control).Selected = Settings.AllScreenSettings.Settings[0].SDOSettings.SDOSelections[x];
+                control.BorderStyle = BorderStyle.Fixed3D;
+                x++;
+            }
+        }
 	}
 }
