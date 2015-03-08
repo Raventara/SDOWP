@@ -13,17 +13,25 @@ namespace SDOWP
 {
 	public partial class ToggleImageButton : PictureBox
 	{
+        private Image fUnmodifiedImage;      
+        public void SetImage(Image pImage)
+        {
+            base.Image = pImage;
+            fUnmodifiedImage = pImage;
+        }
+
+        private bool _Selected = true;
         public bool Selected
         {
             get
             {
-                return Selected;
+                return _Selected;
             }
             set
             {
-                if (value != Selected)
+                if (value != _Selected)
                 {
-                    Selected = value;
+                    _Selected = value;
                     UpdateImage();
                 };
             }
@@ -34,30 +42,27 @@ namespace SDOWP
 		[Browsable(true)]
 		public int Order { get; set; }
 
-		private Image i;
 		public ToggleImageButton()
 		{
 			InitializeComponent();
-			this.Selected = true;
 		}
 
 		private void ToggleImageButton_Click(object sender, EventArgs e)
 		{
+            _Selected = !_Selected;
             UpdateImage();
-		}
+        }
 
         private void UpdateImage()
         {
-            if (Selected)
+            if (!_Selected)
             {
-                i = this.Image;
                 this.Image = MakeGrayscale3(new Bitmap(this.Image));
             }
             else
             {
-                this.Image = i;
+                this.Image = fUnmodifiedImage;
             }
-            Selected = !Selected;
         }
 
 

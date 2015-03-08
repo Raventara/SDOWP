@@ -53,7 +53,7 @@ namespace SDOWP
 			return RemoteImage;
 		}
 
-		private async void SetToRemoteImage(PictureBox pTarget, string pUrl)
+		private async void SetToRemoteImage(ToggleImageButton pTarget, string pUrl)
 		{
 			var sizemode = pTarget.SizeMode;
 			var backcolour = pTarget.BackColor;
@@ -63,7 +63,7 @@ namespace SDOWP
 			this.Cursor = Cursors.AppStarting;
 			Bitmap HTML = await GetRemoteImage(pUrl);
 			this.Cursor = Cursors.Arrow;
-			pTarget.Image = HTML;
+			pTarget.SetImage(HTML);
 			pTarget.BackColor = backcolour;
 			pTarget.SizeMode = sizemode;
 
@@ -99,7 +99,7 @@ namespace SDOWP
 			int x = 0;
 			foreach (PictureBox control in tpSDO.Controls.Cast<Control>().OrderBy(c => c.Name).Where(c => c.GetType() == typeof(ToggleImageButton)))
 			{
-				SetToRemoteImage(control, baseURL + urls[x]);
+				SetToRemoteImage((ToggleImageButton)control, baseURL + urls[x]);
 				x++;
 			}
 		}
@@ -486,7 +486,6 @@ namespace SDOWP
             foreach (PictureBox control in tpSDO.Controls.Cast<Control>().OrderBy(c => c.Name).Where(c => c.GetType() == typeof(ToggleImageButton)))
             {
                 ((ToggleImageButton)control).Selected = Settings.AllScreenSettings.Settings[0].SDOSettings.SDOSelections[x];
-                control.BorderStyle = BorderStyle.Fixed3D;
                 x++;
             }
         }

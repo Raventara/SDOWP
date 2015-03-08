@@ -37,11 +37,6 @@ namespace SDOWP
             this.btnSDOPreview = new System.Windows.Forms.Button();
             this.rbSliced = new System.Windows.Forms.RadioButton();
             this.rbSlideShow = new System.Windows.Forms.RadioButton();
-            this.tpStatic = new System.Windows.Forms.TabPage();
-            this.pbStatic = new System.Windows.Forms.PictureBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.lbScreenInfo = new System.Windows.Forms.ListBox();
-            this.btnSaveSettings = new System.Windows.Forms.Button();
             this.pbSDO2 = new SDOWP.ToggleImageButton();
             this.pbSDO3 = new SDOWP.ToggleImageButton();
             this.pbSDO4 = new SDOWP.ToggleImageButton();
@@ -49,12 +44,15 @@ namespace SDOWP
             this.pbSDO6 = new SDOWP.ToggleImageButton();
             this.pbSDO7 = new SDOWP.ToggleImageButton();
             this.pbSDO1 = new SDOWP.ToggleImageButton();
+            this.tpStatic = new System.Windows.Forms.TabPage();
+            this.pbStatic = new System.Windows.Forms.PictureBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.lbScreenInfo = new System.Windows.Forms.ListBox();
+            this.btnSaveSettings = new System.Windows.Forms.Button();
             this.btnLoadSettings = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pbScreensPreview)).BeginInit();
             this.tclWallpapers.SuspendLayout();
             this.tpSDO.SuspendLayout();
-            this.tpStatic.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbStatic)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbSDO2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbSDO3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbSDO4)).BeginInit();
@@ -62,6 +60,8 @@ namespace SDOWP
             ((System.ComponentModel.ISupportInitialize)(this.pbSDO6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbSDO7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbSDO1)).BeginInit();
+            this.tpStatic.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbStatic)).BeginInit();
             this.SuspendLayout();
             // 
             // pbScreensPreview
@@ -158,56 +158,6 @@ namespace SDOWP
             this.rbSlideShow.Text = "SlideShow";
             this.rbSlideShow.UseVisualStyleBackColor = true;
             // 
-            // tpStatic
-            // 
-            this.tpStatic.Controls.Add(this.pbStatic);
-            this.tpStatic.Location = new System.Drawing.Point(4, 22);
-            this.tpStatic.Name = "tpStatic";
-            this.tpStatic.Padding = new System.Windows.Forms.Padding(3);
-            this.tpStatic.Size = new System.Drawing.Size(391, 243);
-            this.tpStatic.TabIndex = 0;
-            this.tpStatic.Text = "Static Wallpaper";
-            this.tpStatic.UseVisualStyleBackColor = true;
-            // 
-            // pbStatic
-            // 
-            this.pbStatic.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pbStatic.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pbStatic.Location = new System.Drawing.Point(6, 6);
-            this.pbStatic.Name = "pbStatic";
-            this.pbStatic.Size = new System.Drawing.Size(379, 231);
-            this.pbStatic.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pbStatic.TabIndex = 0;
-            this.pbStatic.TabStop = false;
-            this.pbStatic.Click += new System.EventHandler(this.pbStatic_Click);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(472, 15);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(44, 13);
-            this.label1.TabIndex = 6;
-            this.label1.Text = "Screen:";
-            // 
-            // lbScreenInfo
-            // 
-            this.lbScreenInfo.FormattingEnabled = true;
-            this.lbScreenInfo.Location = new System.Drawing.Point(670, 12);
-            this.lbScreenInfo.Name = "lbScreenInfo";
-            this.lbScreenInfo.Size = new System.Drawing.Size(202, 43);
-            this.lbScreenInfo.TabIndex = 1;
-            // 
-            // btnSaveSettings
-            // 
-            this.btnSaveSettings.Location = new System.Drawing.Point(786, 315);
-            this.btnSaveSettings.Name = "btnSaveSettings";
-            this.btnSaveSettings.Size = new System.Drawing.Size(86, 23);
-            this.btnSaveSettings.TabIndex = 7;
-            this.btnSaveSettings.Text = "Save Settings";
-            this.btnSaveSettings.UseVisualStyleBackColor = true;
-            this.btnSaveSettings.Click += new System.EventHandler(this.btnSaveSettings_Click);
-            // 
             // pbSDO2
             // 
             this.pbSDO2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -299,6 +249,56 @@ namespace SDOWP
             this.pbSDO1.TabIndex = 1;
             this.pbSDO1.TabStop = false;
             // 
+            // tpStatic
+            // 
+            this.tpStatic.Controls.Add(this.pbStatic);
+            this.tpStatic.Location = new System.Drawing.Point(4, 22);
+            this.tpStatic.Name = "tpStatic";
+            this.tpStatic.Padding = new System.Windows.Forms.Padding(3);
+            this.tpStatic.Size = new System.Drawing.Size(391, 243);
+            this.tpStatic.TabIndex = 0;
+            this.tpStatic.Text = "Static Wallpaper";
+            this.tpStatic.UseVisualStyleBackColor = true;
+            // 
+            // pbStatic
+            // 
+            this.pbStatic.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pbStatic.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pbStatic.Location = new System.Drawing.Point(6, 6);
+            this.pbStatic.Name = "pbStatic";
+            this.pbStatic.Size = new System.Drawing.Size(379, 231);
+            this.pbStatic.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbStatic.TabIndex = 0;
+            this.pbStatic.TabStop = false;
+            this.pbStatic.Click += new System.EventHandler(this.pbStatic_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(472, 15);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(44, 13);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "Screen:";
+            // 
+            // lbScreenInfo
+            // 
+            this.lbScreenInfo.FormattingEnabled = true;
+            this.lbScreenInfo.Location = new System.Drawing.Point(670, 12);
+            this.lbScreenInfo.Name = "lbScreenInfo";
+            this.lbScreenInfo.Size = new System.Drawing.Size(202, 43);
+            this.lbScreenInfo.TabIndex = 1;
+            // 
+            // btnSaveSettings
+            // 
+            this.btnSaveSettings.Location = new System.Drawing.Point(786, 315);
+            this.btnSaveSettings.Name = "btnSaveSettings";
+            this.btnSaveSettings.Size = new System.Drawing.Size(86, 23);
+            this.btnSaveSettings.TabIndex = 7;
+            this.btnSaveSettings.Text = "Save Settings";
+            this.btnSaveSettings.UseVisualStyleBackColor = true;
+            this.btnSaveSettings.Click += new System.EventHandler(this.btnSaveSettings_Click);
+            // 
             // btnLoadSettings
             // 
             this.btnLoadSettings.Location = new System.Drawing.Point(694, 315);
@@ -331,8 +331,6 @@ namespace SDOWP
             this.tclWallpapers.ResumeLayout(false);
             this.tpSDO.ResumeLayout(false);
             this.tpSDO.PerformLayout();
-            this.tpStatic.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pbStatic)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbSDO2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbSDO3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbSDO4)).EndInit();
@@ -340,6 +338,8 @@ namespace SDOWP
             ((System.ComponentModel.ISupportInitialize)(this.pbSDO6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbSDO7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbSDO1)).EndInit();
+            this.tpStatic.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pbStatic)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
