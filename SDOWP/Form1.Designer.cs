@@ -50,6 +50,8 @@ namespace SDOWP
             this.lbScreenInfo = new System.Windows.Forms.ListBox();
             this.btnSaveSettings = new System.Windows.Forms.Button();
             this.btnLoadSettings = new System.Windows.Forms.Button();
+            this.chkUseSDO = new System.Windows.Forms.CheckBox();
+            this.chkUseStatic = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pbScreensPreview)).BeginInit();
             this.tclWallpapers.SuspendLayout();
             this.tpSDO.SuspendLayout();
@@ -95,6 +97,7 @@ namespace SDOWP
             // 
             // tpSDO
             // 
+            this.tpSDO.Controls.Add(this.chkUseSDO);
             this.tpSDO.Controls.Add(this.cbRandom);
             this.tpSDO.Controls.Add(this.btnSDOPreview);
             this.tpSDO.Controls.Add(this.rbSliced);
@@ -162,7 +165,7 @@ namespace SDOWP
             // 
             this.pbSDO2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pbSDO2.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pbSDO2.Location = new System.Drawing.Point(102, 6);
+            this.pbSDO2.Location = new System.Drawing.Point(102, 25);
             this.pbSDO2.Name = "pbSDO2";
             this.pbSDO2.Order = 1;
             this.pbSDO2.Selected = true;
@@ -175,7 +178,7 @@ namespace SDOWP
             // 
             this.pbSDO3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pbSDO3.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pbSDO3.Location = new System.Drawing.Point(198, 6);
+            this.pbSDO3.Location = new System.Drawing.Point(198, 25);
             this.pbSDO3.Name = "pbSDO3";
             this.pbSDO3.Order = 2;
             this.pbSDO3.Selected = true;
@@ -188,7 +191,7 @@ namespace SDOWP
             // 
             this.pbSDO4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pbSDO4.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pbSDO4.Location = new System.Drawing.Point(294, 6);
+            this.pbSDO4.Location = new System.Drawing.Point(294, 25);
             this.pbSDO4.Name = "pbSDO4";
             this.pbSDO4.Order = 3;
             this.pbSDO4.Selected = true;
@@ -201,7 +204,7 @@ namespace SDOWP
             // 
             this.pbSDO5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pbSDO5.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pbSDO5.Location = new System.Drawing.Point(52, 102);
+            this.pbSDO5.Location = new System.Drawing.Point(52, 121);
             this.pbSDO5.Name = "pbSDO5";
             this.pbSDO5.Order = 4;
             this.pbSDO5.Selected = true;
@@ -214,7 +217,7 @@ namespace SDOWP
             // 
             this.pbSDO6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pbSDO6.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pbSDO6.Location = new System.Drawing.Point(148, 102);
+            this.pbSDO6.Location = new System.Drawing.Point(148, 121);
             this.pbSDO6.Name = "pbSDO6";
             this.pbSDO6.Order = 5;
             this.pbSDO6.Selected = true;
@@ -227,7 +230,7 @@ namespace SDOWP
             // 
             this.pbSDO7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pbSDO7.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pbSDO7.Location = new System.Drawing.Point(244, 102);
+            this.pbSDO7.Location = new System.Drawing.Point(244, 121);
             this.pbSDO7.Name = "pbSDO7";
             this.pbSDO7.Order = 6;
             this.pbSDO7.Selected = true;
@@ -240,7 +243,7 @@ namespace SDOWP
             // 
             this.pbSDO1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pbSDO1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pbSDO1.Location = new System.Drawing.Point(6, 6);
+            this.pbSDO1.Location = new System.Drawing.Point(6, 25);
             this.pbSDO1.Name = "pbSDO1";
             this.pbSDO1.Order = 0;
             this.pbSDO1.Selected = true;
@@ -251,6 +254,7 @@ namespace SDOWP
             // 
             // tpStatic
             // 
+            this.tpStatic.Controls.Add(this.chkUseStatic);
             this.tpStatic.Controls.Add(this.pbStatic);
             this.tpStatic.Location = new System.Drawing.Point(4, 22);
             this.tpStatic.Name = "tpStatic";
@@ -264,9 +268,9 @@ namespace SDOWP
             // 
             this.pbStatic.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pbStatic.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pbStatic.Location = new System.Drawing.Point(6, 6);
+            this.pbStatic.Location = new System.Drawing.Point(6, 29);
             this.pbStatic.Name = "pbStatic";
-            this.pbStatic.Size = new System.Drawing.Size(379, 231);
+            this.pbStatic.Size = new System.Drawing.Size(379, 208);
             this.pbStatic.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pbStatic.TabIndex = 0;
             this.pbStatic.TabStop = false;
@@ -309,6 +313,26 @@ namespace SDOWP
             this.btnLoadSettings.UseVisualStyleBackColor = true;
             this.btnLoadSettings.Click += new System.EventHandler(this.btnLoadSettings_Click);
             // 
+            // chkUseSDO
+            // 
+            this.chkUseSDO.AutoSize = true;
+            this.chkUseSDO.Location = new System.Drawing.Point(7, 7);
+            this.chkUseSDO.Name = "chkUseSDO";
+            this.chkUseSDO.Size = new System.Drawing.Size(108, 17);
+            this.chkUseSDO.TabIndex = 12;
+            this.chkUseSDO.Text = "Use SDO Images";
+            this.chkUseSDO.UseVisualStyleBackColor = true;
+            // 
+            // chkUseStatic
+            // 
+            this.chkUseStatic.AutoSize = true;
+            this.chkUseStatic.Location = new System.Drawing.Point(6, 6);
+            this.chkUseStatic.Name = "chkUseStatic";
+            this.chkUseStatic.Size = new System.Drawing.Size(112, 17);
+            this.chkUseStatic.TabIndex = 13;
+            this.chkUseStatic.Text = "Use Static Images";
+            this.chkUseStatic.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -339,6 +363,7 @@ namespace SDOWP
             ((System.ComponentModel.ISupportInitialize)(this.pbSDO7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbSDO1)).EndInit();
             this.tpStatic.ResumeLayout(false);
+            this.tpStatic.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbStatic)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -368,6 +393,8 @@ namespace SDOWP
 		private System.Windows.Forms.CheckBox cbRandom;
         private System.Windows.Forms.Button btnSaveSettings;
         private System.Windows.Forms.Button btnLoadSettings;
+        private System.Windows.Forms.CheckBox chkUseSDO;
+        private System.Windows.Forms.CheckBox chkUseStatic;
 	}
 }
 
