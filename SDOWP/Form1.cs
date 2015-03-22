@@ -14,6 +14,8 @@ namespace SDOWP
 {
 	public partial class Form1 : Form
 	{
+		private string StaticFileName = string.Empty;
+
 		private int LastSDOIndex = 0;
 
 		private int[,] kernel = new int[3, 3] { { 5, 4, 5 }, { 4, 100, 4 }, { 5, 4, 5 } };
@@ -160,9 +162,9 @@ namespace SDOWP
 		{
 			foreach (var screen in Screen.AllScreens)
 			{
-				cbScreens.Items.Add(screen.DeviceName);
+				cboScreens.Items.Add(screen.DeviceName);
 			}
-			cbScreens.SelectedIndex = 0;
+			cboScreens.SelectedIndex = 0;
 		}
 
 		private void DrawDisplays()
@@ -429,15 +431,6 @@ namespace SDOWP
 			g.DrawImage(img, rect);
 		}
 
-		private void pbStatic_Click(object sender, EventArgs e)
-		{
-			OpenFileDialog ofd = new OpenFileDialog();
-			ofd.Multiselect = false;
-			ofd.ShowDialog();
-
-			pbStatic.Image = Bitmap.FromFile(ofd.FileName);
-		}
-
 		private void btnSDOPreview_Click(object sender, EventArgs e)
 		{
 			List<Image> SDOPreviewImages = new List<Image>();
@@ -453,7 +446,7 @@ namespace SDOWP
 
 		private void cbScreens_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			LoadScreen(cbScreens.SelectedItem.ToString());
+			LoadScreen(cboScreens.SelectedItem.ToString());
 		}
 
 		private void LoadScreen(string p)
@@ -472,22 +465,127 @@ namespace SDOWP
 
         private void btnSaveSettings_Click(object sender, EventArgs e)
         {
-            bool[] SDOs = new bool[7] { true, true, true, true, true, true, true };
+			SaveSettings();
+		}
+
+		private void SaveSettings() {
             var settings = new ScreenSettings();
-            settings.Settings.Add(new ScreenSetting() { ScreenDeviceName = "test", SDOSettings = new SDOSetting() { Random = true, SDOSelections = SDOs.ToList<bool>(), Sliced = true, SlideShow = false } });
+
+            foreach (var item in cboScreens.Items)
+            {
+                SDOSetting SDOs = new SDOSetting();
+                SDOs.Random = cbRandom.Checked;
+                SDOs.SDOSelections = GetSDOImageSelections();
+				SDOs.Sliced = rbSliced.Checked;
+				SDOs.SlideShow = rbSlideShow.Checked;
+
+				ScreenSetting SC = new ScreenSetting();
+				SC.ScreenDeviceName = item.ToString();
+				SC.SDOSettings = SDOs;
+
+				SC.StaticWallpaperFilename = txtStaticFilename.Text;
+
+				if (cbUseSDO.Checked)
+					SC.ScreenWallpaperType = WallPaperType.SDOWallpaper;
+				else
+					SC.ScreenWallpaperType = WallPaperType.StaticWallpaper;
+				
+				settings.Settings.Add(SC);                
+            }
+
             Settings.AllScreenSettings = settings;
-            Settings.SaveSettings("test.settings");
+            Settings.SaveSettings(".settings");
+        }
+
+        private List<bool> GetSDOImageSelections()
+        {
+            List<bool> results = new List<bool>();
+            foreach (PictureBox control in tpSDO.Controls.Cast<Control>().OrderBy(c => c.Name).Where(c => c.GetType() == typeof(ToggleImageButton)))
+            {
+                if (((ToggleImageButton)control).Selected)
+                    results.Add(true);
+                else
+                    results.Add(false);
+				
+            }
+            return results;
         }
 
         private void btnLoadSettings_Click(object sender, EventArgs e)
         {
-            Settings.LoadSettings("test.settings");
-            int x = 0;
+			LoadSettings();
+		}
+
+		private void LoadSettings() {
+            Settings.LoadSettings(".settings");
+			ScreenSetting S = Settings.AllScreenSettings.Settings.First(x => x.ScreenDeviceName == cboScreens.Text);
+
+			cbRandom.Checked = S.SDOSettings.Random;
+
+			if (S.ScreenWallpaperType == WallPaperType.SDOWallpaper)
+				cbUseSDO.Checked = true;
+			else
+				cbUseStatic.Checked = true;
+
+			rbSliced.Checked = S.SDOSettings.Sliced;
+			rbSlideShow.Checked = S.SDOSettings.SlideShow;
+
+			txtStaticFilename.Text = S.StaticWallpaperFilename;
+
+			pbStaticPreview.Image = Image.FromFile(S.StaticWallpaperFilename);
+
+			int i = 0;
             foreach (PictureBox control in tpSDO.Controls.Cast<Control>().OrderBy(c => c.Name).Where(c => c.GetType() == typeof(ToggleImageButton)))
             {
-                ((ToggleImageButton)control).Selected = Settings.AllScreenSettings.Settings[0].SDOSettings.SDOSelections[x];
-                x++;
+                ((ToggleImageButton)control).Selected = S.SDOSettings.SDOSelections[i];
+                i++;
             }
+
         }
+
+		private void cbUseStatic_CheckedChanged(object sender, EventArgs e)
+		{
+			cbUseSDO.Checked = !cbUseStatic.Checked;
+		}
+
+		private void cbUseSDO_CheckedChanged(object sender, EventArgs e)
+		{
+			cbUseStatic.Checked = !cbUseSDO.Checked;
+		}
+
+		private void txtStaticFilename_Click(object sender, EventArgs e)
+		{
+			OpenFileDialog OFD = new OpenFileDialog();
+			OFD.Filter = "JPEG Files (*.jpeg)|*.jpeg|PNG Files (*.png)|*.png|JPG Files (*.jpg)|*.jpg|GIF Files (*.gif)|*.gif";
+			OFD.Multiselect = false;
+			if (OFD.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+			{
+				StaticFileName = OFD.FileName;
+				txtStaticFilename.Text = StaticFileName;
+				pbStaticPreview.Image = Image.FromFile(OFD.FileName);
+			}
+		}
+
+		private void btnApply_Click(object sender, EventArgs e)
+		{
+			SaveSettings();
+			var images = new Dictionary<string, Image>();
+
+			foreach (var item in cboScreens.Items)
+			{
+				ScreenSetting S = Settings.AllScreenSettings.Settings.First(x => x.ScreenDeviceName == item.ToString());
+				if (S.ScreenWallpaperType == WallPaperType.StaticWallpaper)
+					images.Add(item.ToString(), Image.FromFile(S.StaticWallpaperFilename));
+				else
+				{
+					GetFancySDOWP();
+					images.Add(item.ToString(), Image.FromFile(Application.CommonAppDataPath + @"\SDO.jpg"));
+				}
+			}
+
+			CreateFullWallperImageForAllMonitors(images);
+		}
+
+
 	}
 }

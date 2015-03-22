@@ -7,6 +7,12 @@ using ServiceStack.Text;
 using System.IO;
 namespace SDOWP
 {
+    public enum WallPaperType
+    {
+        SDOWallpaper,
+        StaticWallpaper
+    };
+
 	public static class Settings
 	{
         public static ScreenSettings AllScreenSettings { get { return _AllScreenSettings; } set { _AllScreenSettings = value; } }
@@ -29,9 +35,11 @@ namespace SDOWP
 
         public static bool LoadSettings(string pFilename)
         {
-            TextReader r = new StreamReader(pFilename);
-            _AllScreenSettings = JsonSerializer.DeserializeFromReader<ScreenSettings>(r);
-            return false;
+			using (TextReader r = new StreamReader(pFilename))
+			{
+				_AllScreenSettings = JsonSerializer.DeserializeFromReader<ScreenSettings>(r);
+				return false;
+			}
         }
 	}
 
@@ -44,6 +52,8 @@ namespace SDOWP
 	public class ScreenSetting
 	{
 		public string ScreenDeviceName { get; set; }
+        public WallPaperType ScreenWallpaperType { get; set; }
+        public string StaticWallpaperFilename { get; set; }
 		public SDOSetting SDOSettings { get; set; }
 	}
 
