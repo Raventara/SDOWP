@@ -29,6 +29,8 @@ namespace SDOWP
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
 			this.pbScreensPreview = new System.Windows.Forms.PictureBox();
 			this.cboScreens = new System.Windows.Forms.ComboBox();
 			this.tclWallpapers = new System.Windows.Forms.TabControl();
@@ -46,6 +48,10 @@ namespace SDOWP
 			this.lbScreenInfo = new System.Windows.Forms.ListBox();
 			this.btnSaveSettings = new System.Windows.Forms.Button();
 			this.btnLoadSettings = new System.Windows.Forms.Button();
+			this.btnApply = new System.Windows.Forms.Button();
+			this.textBox1 = new System.Windows.Forms.TextBox();
+			this.textBox2 = new System.Windows.Forms.TextBox();
+			this.timer1 = new System.Windows.Forms.Timer(this.components);
 			this.pbSDO2 = new SDOWP.ToggleImageButton();
 			this.pbSDO3 = new SDOWP.ToggleImageButton();
 			this.pbSDO4 = new SDOWP.ToggleImageButton();
@@ -53,7 +59,6 @@ namespace SDOWP
 			this.pbSDO6 = new SDOWP.ToggleImageButton();
 			this.pbSDO7 = new SDOWP.ToggleImageButton();
 			this.pbSDO1 = new SDOWP.ToggleImageButton();
-			this.btnApply = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.pbScreensPreview)).BeginInit();
 			this.tclWallpapers.SuspendLayout();
 			this.tpSDO.SuspendLayout();
@@ -78,11 +83,11 @@ namespace SDOWP
 			this.pbScreensPreview.TabIndex = 3;
 			this.pbScreensPreview.TabStop = false;
 			// 
-			// cbScreens
+			// cboScreens
 			// 
 			this.cboScreens.FormattingEnabled = true;
 			this.cboScreens.Location = new System.Drawing.Point(522, 12);
-			this.cboScreens.Name = "cbScreens";
+			this.cboScreens.Name = "cboScreens";
 			this.cboScreens.Size = new System.Drawing.Size(142, 21);
 			this.cboScreens.TabIndex = 0;
 			this.cboScreens.SelectedIndexChanged += new System.EventHandler(this.cbScreens_SelectedIndexChanged);
@@ -258,6 +263,37 @@ namespace SDOWP
 			this.btnLoadSettings.UseVisualStyleBackColor = true;
 			this.btnLoadSettings.Click += new System.EventHandler(this.btnLoadSettings_Click);
 			// 
+			// btnApply
+			// 
+			this.btnApply.Location = new System.Drawing.Point(786, 344);
+			this.btnApply.Name = "btnApply";
+			this.btnApply.Size = new System.Drawing.Size(86, 23);
+			this.btnApply.TabIndex = 9;
+			this.btnApply.Text = "Apply";
+			this.btnApply.UseVisualStyleBackColor = true;
+			this.btnApply.Click += new System.EventHandler(this.btnApply_Click);
+			// 
+			// textBox1
+			// 
+			this.textBox1.Location = new System.Drawing.Point(13, 315);
+			this.textBox1.Multiline = true;
+			this.textBox1.Name = "textBox1";
+			this.textBox1.Size = new System.Drawing.Size(217, 134);
+			this.textBox1.TabIndex = 10;
+			// 
+			// textBox2
+			// 
+			this.textBox2.Location = new System.Drawing.Point(236, 317);
+			this.textBox2.Multiline = true;
+			this.textBox2.Name = "textBox2";
+			this.textBox2.Size = new System.Drawing.Size(217, 134);
+			this.textBox2.TabIndex = 11;
+			// 
+			// timer1
+			// 
+			this.timer1.Enabled = true;
+			this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+			// 
 			// pbSDO2
 			// 
 			this.pbSDO2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -349,21 +385,13 @@ namespace SDOWP
 			this.pbSDO1.TabIndex = 1;
 			this.pbSDO1.TabStop = false;
 			// 
-			// btnApply
-			// 
-			this.btnApply.Location = new System.Drawing.Point(786, 344);
-			this.btnApply.Name = "btnApply";
-			this.btnApply.Size = new System.Drawing.Size(86, 23);
-			this.btnApply.TabIndex = 9;
-			this.btnApply.Text = "Apply";
-			this.btnApply.UseVisualStyleBackColor = true;
-			this.btnApply.Click += new System.EventHandler(this.btnApply_Click);
-			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(884, 461);
+			this.Controls.Add(this.textBox2);
+			this.Controls.Add(this.textBox1);
 			this.Controls.Add(this.btnApply);
 			this.Controls.Add(this.btnLoadSettings);
 			this.Controls.Add(this.btnSaveSettings);
@@ -374,6 +402,7 @@ namespace SDOWP
 			this.Controls.Add(this.pbScreensPreview);
 			this.DoubleBuffered = true;
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "Form1";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "SDO WP";
@@ -424,6 +453,9 @@ namespace SDOWP
         private System.Windows.Forms.CheckBox cbUseStatic;
 		private System.Windows.Forms.TextBox txtStaticFilename;
 		private System.Windows.Forms.Button btnApply;
+		private System.Windows.Forms.TextBox textBox1;
+		private System.Windows.Forms.TextBox textBox2;
+		private System.Windows.Forms.Timer timer1;
 	}
 }
 
