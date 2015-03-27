@@ -43,6 +43,9 @@ namespace SDOWP
 		public Form1()
 		{
 			InitializeComponent();
+            this.txtStaticFilename.Click += new System.EventHandler(this.txtStaticFilename_Click);
+            this.pbStaticPreview.Click += new System.EventHandler(this.txtStaticFilename_Click);
+
 		}
 
 		private async Task<Bitmap> GetRemoteImage(string pUrl)
@@ -209,12 +212,21 @@ namespace SDOWP
 
 					float SDOsize = Math.Min(ScreenW, ScreenH);
 
-					if (SDOPreviewImage != null && screenNo == 1)
+                    if (SDOPreviewImage != null && ScreenSettings[@"\\.\DISPLAY" + screenNo].ScreenWallpaperType == WallPaperType.SDOWallpaper)
 					{
 						g.FillRectangle(Brushes.Black, ScreenX, ScreenY, ScreenW, ScreenH);
 						g.DrawImage(SDOPreviewImage, new RectangleF((ScreenW / 2) - (SDOsize / 2), (ScreenH / 2) - (SDOsize / 2), SDOsize, SDOsize));
 						g.DrawRectangle(Pens.GreenYellow, ScreenX, ScreenY, ScreenW, ScreenH);
 					}
+                    else if(pbStaticPreview.Image != null && ScreenSettings[@"\\.\DISPLAY" + screenNo].ScreenWallpaperType == WallPaperType.StaticWallpaper)
+                    {
+                        g.FillRectangle(Brushes.Black, ScreenX, ScreenY, ScreenW, ScreenH);
+
+                        //Stretch Mode
+                        g.DrawImage(pbStaticPreview.Image, ScreenX, ScreenY, ScreenW, ScreenH);
+                        //g.DrawImage(pbStaticPreview.Image, new RectangleF((ScreenW / 2) - (pbStaticPreview.Image.Width * ratio / 2), (ScreenH / 2) - (pbStaticPreview.Image.Height * ratio / 2), pbStaticPreview.Image.Width * ratio, pbStaticPreview.Image.Height * ratio));
+                        g.DrawRectangle(Pens.GreenYellow, ScreenX, ScreenY, ScreenW, ScreenH);
+                    }
 					else
 					{
 						g.DrawImage(new Bitmap("Display.png"), ScreenX, ScreenY, ScreenW, ScreenH);
@@ -448,8 +460,9 @@ namespace SDOWP
 			g.DrawImage(img, rect);
 		}
 
-		private void btnSDOPreview_Click(object sender, EventArgs e)
+		private void DrawPreviews()
 		{
+
 			List<Image> SDOPreviewImages = new List<Image>();
 
 			foreach (var item in tpSDO.Controls.Cast<Control>().OrderBy(c => c.Name).Where(c => c.GetType() == typeof(ToggleImageButton) && ((ToggleImageButton)c).Selected == true).ToList())
@@ -607,17 +620,17 @@ namespace SDOWP
 		}
 
 		private void txtStaticFilename_Click(object sender, EventArgs e)
-		{
-			OpenFileDialog OFD = new OpenFileDialog();
-			OFD.Filter = "JPEG Files (*.jpeg)|*.jpeg|PNG Files (*.png)|*.png|JPG Files (*.jpg)|*.jpg|GIF Files (*.gif)|*.gif";
-			OFD.Multiselect = false;
-			if (OFD.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-			{
-				StaticFileName = OFD.FileName;
-				txtStaticFilename.Text = StaticFileName;
-				pbStaticPreview.Image = Image.FromFile(OFD.FileName);
-			}
-		}
+        {
+            OpenFileDialog OFD = new OpenFileDialog();
+            OFD.Filter = "All Graphics Types|*.bmp;*.jpg;*.jpeg;*.png;*.tif;*.tiff;*.gif|Bitmap Files (*.bmp)|*.bmp|JPG Files (*.jpg)|*.jpg|JPEG Files (*.jpeg)|*.jpeg|PNG Files (*.png)|*.png|GIF Files (*.gif)|*.gif";
+            OFD.Multiselect = false;
+            if (OFD.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                StaticFileName = OFD.FileName;
+                txtStaticFilename.Text = StaticFileName;
+                pbStaticPreview.Image = Image.FromFile(OFD.FileName);
+            }
+        }
 
 		private void btnApply_Click(object sender, EventArgs e)
 		{
@@ -656,6 +669,11 @@ namespace SDOWP
 			}
 			else textBox2.Text = "";
 		}
+
+        private void AllItems_Click(object sender, EventArgs e)
+        {
+            DrawPreviews();
+        }
 
 
 
