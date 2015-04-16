@@ -263,7 +263,7 @@ namespace SDOWP
 			}
 		}
 
-		private void GetFancySDOWP(List<bool> pSelections)
+		private void GetFancySDOWP(List<bool> pSelections, string pDisplayName)
 		{
 			List<Image> SDOImages = new List<Image>();
 			IFilter filter = new Convolution(kernel);
@@ -331,10 +331,10 @@ namespace SDOWP
 
 			this.BackgroundImage = SDO;
 
-			if (File.Exists("SDO.png"))
-				File.Delete("SDO.png");
+			if (File.Exists("SDO" + pDisplayName + ".png"))
+				File.Delete("SDO" + pDisplayName + ".png");
 
-			SDO.Save("SDO.png"); //Application.CommonAppDataPath + @"\SDO.jpg");
+			SDO.Save("SDO" + pDisplayName + ".png"); //Application.CommonAppDataPath + @"\SDO.jpg");
 
 			////System.Diagnostics.Process.Start("explorer.exe", Application.CommonAppDataPath);
 
@@ -644,8 +644,8 @@ namespace SDOWP
 					images.Add(item.Key, Image.FromFile(item.Value.StaticWallpaperFilename));
 				else
 				{
-					GetFancySDOWP(item.Value.SDOSettings.SDOSelections);
-					images.Add(item.Key, Image.FromFile("SDO.png"));
+					GetFancySDOWP(item.Value.SDOSettings.SDOSelections, item.Key.Replace("\\\\.\\", string.Empty));
+					images.Add(item.Key, Image.FromFile("SDO" + item.Key.Replace("\\\\.\\", string.Empty) + ".png"));
 				}
 			}
 
