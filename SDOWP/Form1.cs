@@ -38,7 +38,7 @@ namespace SDOWP
 
 		private const string baseURL = "http://sdo.gsfc.nasa.gov/assets/img/latest/";
 
-		private Image SDOPreviewImage;
+		private Dictionary<int,Image> SDOPreviewImage = new Dictionary<int,Image>();
 
 		public Form1()
 		{
@@ -129,7 +129,7 @@ namespace SDOWP
 			int h = pImages[0].Height;
 			float segmentWidth = w / segmentCount;
 
-			Random rnd = new Random();
+			Random rnd = new Random(DateTime.Now.Millisecond);
 
 			Bitmap result = new Bitmap(w, h);
 
@@ -212,21 +212,21 @@ namespace SDOWP
 
 					float SDOsize = Math.Min(ScreenW, ScreenH);
 
-                    if (SDOPreviewImage != null && ScreenSettings[@"\\.\DISPLAY" + screenNo].ScreenWallpaperType == WallPaperType.SDOWallpaper)
+					if (SDOPreviewImage != null && SDOPreviewImage.Count > 0 && ScreenSettings[@"\\.\DISPLAY" + screenNo].ScreenWallpaperType == WallPaperType.SDOWallpaper)
 					{
 						g.FillRectangle(Brushes.Black, ScreenX, ScreenY, ScreenW, ScreenH);
-						g.DrawImage(SDOPreviewImage, new RectangleF((ScreenW / 2) - (SDOsize / 2), (ScreenH / 2) - (SDOsize / 2), SDOsize, SDOsize));
+						g.DrawImage(SDOPreviewImage[screenNo], new RectangleF((ScreenW / 2) - (SDOsize / 2) + ScreenX, (ScreenH / 2) - (SDOsize / 2) + ScreenY, SDOsize, SDOsize));
 						g.DrawRectangle(Pens.GreenYellow, ScreenX, ScreenY, ScreenW, ScreenH);
 					}
-                    else if(pbStaticPreview.Image != null && ScreenSettings[@"\\.\DISPLAY" + screenNo].ScreenWallpaperType == WallPaperType.StaticWallpaper)
-                    {
-                        g.FillRectangle(Brushes.Black, ScreenX, ScreenY, ScreenW, ScreenH);
+					else if (pbStaticPreview.Image != null && ScreenSettings[@"\\.\DISPLAY" + screenNo].ScreenWallpaperType == WallPaperType.StaticWallpaper)
+					{
+						g.FillRectangle(Brushes.Black, ScreenX, ScreenY, ScreenW, ScreenH);
 
-                        //Stretch Mode
-                        g.DrawImage(pbStaticPreview.Image, ScreenX, ScreenY, ScreenW, ScreenH);
-                        //g.DrawImage(pbStaticPreview.Image, new RectangleF((ScreenW / 2) - (pbStaticPreview.Image.Width * ratio / 2), (ScreenH / 2) - (pbStaticPreview.Image.Height * ratio / 2), pbStaticPreview.Image.Width * ratio, pbStaticPreview.Image.Height * ratio));
-                        g.DrawRectangle(Pens.GreenYellow, ScreenX, ScreenY, ScreenW, ScreenH);
-                    }
+						//Stretch Mode
+						g.DrawImage(pbStaticPreview.Image, ScreenX, ScreenY, ScreenW, ScreenH);
+						//g.DrawImage(pbStaticPreview.Image, new RectangleF((ScreenW / 2) - (pbStaticPreview.Image.Width * ratio / 2), (ScreenH / 2) - (pbStaticPreview.Image.Height * ratio / 2), pbStaticPreview.Image.Width * ratio, pbStaticPreview.Image.Height * ratio));
+						g.DrawRectangle(Pens.GreenYellow, ScreenX, ScreenY, ScreenW, ScreenH);
+					}
 					else
 					{
 						g.DrawImage(new Bitmap("Display.png"), ScreenX, ScreenY, ScreenW, ScreenH);
@@ -462,15 +462,26 @@ namespace SDOWP
 
 		private void DrawPreviews()
 		{
+			SDOPreviewImage.Clear();
 
-			List<Image> SDOPreviewImages = new List<Image>();
-
-			foreach (var item in tpSDO.Controls.Cast<Control>().OrderBy(c => c.Name).Where(c => c.GetType() == typeof(ToggleImageButton) && ((ToggleImageButton)c).Selected == true).ToList())
+			foreach (var item in ScreenSettings)
 			{
-				SDOPreviewImages.Add(((ToggleImageButton)item).Image);
+				int screenno = int.Parse(item.Key.Replace(@"\\.\DISPLAY", string.Empty));
+
+				if(item.Value.ScreenWallpaperType == WallPaperType.SDOWallpaper)
+				{
+					List<Image> SDOPreviewImages = new List<Image>();
+
+					foreach (var TIB in tpSDO.Controls.Cast<Control>().OrderBy(c => c.Name).Where(c => c.GetType() == typeof(ToggleImageButton) && ((ToggleImageButton)c).Selected == true).ToList())
+					{
+						SDOPreviewImages.Add(((ToggleImageButton)TIB).Image);
+					}
+
+					SDOPreviewImage.Add(screenno, GenerateSDOImage(SDOPreviewImages));
+				}
+
 			}
 
-			SDOPreviewImage = GenerateSDOImage(SDOPreviewImages);
 			DrawDisplays();
 		}
 
@@ -674,6 +685,11 @@ namespace SDOWP
         {
             DrawPreviews();
         }
+
+	   private void btnSDOPreview_Click(object sender, EventArgs e)
+	   {
+		   DrawPreviews();
+	   }
 
 
 
